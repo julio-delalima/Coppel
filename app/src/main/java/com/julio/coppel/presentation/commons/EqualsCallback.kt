@@ -35,27 +35,4 @@ class EqualsCallback<T> : DiffUtil.ItemCallback<T>() {
         fun hasTheSameContent(item: Any?): Boolean
     }
 
-    companion object{
-        /**
-         * Compara el contenido de dos listas de [ComparableContent].
-         *
-         * @param T Clase de los elementos de la lista.
-         * @param first Lista 1.
-         * @param second Lista 2.
-         * @return Indica si las listas son iguales o no.
-         */
-        fun <T> isEqual(first: List<T>, second: List<T>): Boolean {
-
-            if (first.size != second.size) {
-                return false
-            }
-
-            return first.zip(second).all { (x, y) ->
-                if (x is ComparableContent && y is ComparableContent)
-                    (x as ComparableContent).hasTheSameContent(y)
-                else x == y
-            }
-        }
-    }
-
 }

@@ -1,16 +1,16 @@
 package com.julio.coppel.framework.data.remote
 
-import com.julio.coppel.framework.data.remote.model.PexelImage
+import com.julio.coppel.framework.data.remote.model.Image
 import com.julio.coppel.framework.data.remote.model.Page
-import kotlinx.coroutines.Deferred
-import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
     @GET("curated")
-    fun getImagesAsync(): Deferred<Page>
+    suspend fun getImages(@Query("per_page") items: Int, @Query("page") page: Int): Response<Page>
 
     @GET("photos/{id}")
-    fun getImageAync(@Path("id") id: String): Deferred<PexelImage>
+    suspend fun getImage(@Path("id") id: String): Response<Image>
 }

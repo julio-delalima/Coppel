@@ -21,8 +21,6 @@ import com.julio.coppel.presentation.commons.listener.OnMoreScrollListener
  * @constructor Envía un objeto [DiffUtil.ItemCallback] al padre.
  *
  * @param diff Objeto [DiffUtil.ItemCallback] para procesar la lista.
- * @author Julio.
- * @since 11-08-2021.
  */
 abstract class EndlessAdapter<T, VH : BaseHolder<T>>(diff: DiffUtil.ItemCallback<T>) :
     ListAdapter<T, VH>(diff) {
@@ -205,7 +203,7 @@ abstract class EndlessAdapter<T, VH : BaseHolder<T>>(diff: DiffUtil.ItemCallback
 
         val list = ArrayList(currentList)
 
-        if (loading) {
+        if (loading && list.last() != null) {
             list.add(list.size.minus(minus), null)
             super.submitList(list)
         } else if (list.size > 1) {

@@ -14,9 +14,10 @@ class GetImages(private val repository: ImagesRepository) {
     /**
      * Ejecuta el caso de uso y consume la lista de imágenes.
      *
+     * @param items Cantidad de elementos.
+     * @param page Página consultada.
+     *
      * @return Una vez completada la llamada, retorna el resultado.
      */
-    suspend fun invoke() = withContext(Dispatchers.IO) {
-        repository.getImages()
-    }
+    suspend fun invoke(items: Int, page: Int) = repository.getImages(items, page)
 }

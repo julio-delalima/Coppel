@@ -14,6 +14,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
@@ -38,7 +39,8 @@ object NetworkModule {
     @Provides
     @Singleton
     fun retrofitProvider(client: OkHttpClient): Retrofit {
-        return Retrofit.Builder().baseUrl(Constants.BASE_URL).client(client)
+        return Retrofit.Builder().baseUrl(Constants.BASE_URL)
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .build()
     }
@@ -57,6 +59,12 @@ object NetworkModule {
         okHttpClientBuilder.cache(cache)
         okHttpClientBuilder.addInterceptor(headerInterceptor)
 
+        if (BuildConfig.DEBUG) {
+            val logging = HttpLoggingInterceptor()
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+            okHttpClientBuilder.addInterceptor(logging)
+        }
+
         return okHttpClientBuilder.build()
     }
 
@@ -74,7 +82,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    internal fun chacheProvider(context: Context): Cache {
+    internal fun cacheProvider(context: Context): Cache {
         val httpCacheDirectory = File(context.cacheDir.absolutePath, "HttpCache")
         return Cache(httpCacheDirectory, CACHE_SIZE_BYTES)
     }

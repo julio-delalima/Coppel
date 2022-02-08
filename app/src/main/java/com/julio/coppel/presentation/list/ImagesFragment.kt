@@ -1,12 +1,12 @@
 package com.julio.coppel.presentation.list
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.julio.coppel.R
-import com.julio.coppel.databinding.FragmentImageBinding
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.julio.coppel.databinding.FragmentImagesBinding
 import com.julio.coppel.presentation.list.adapter.ImagesAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,7 +19,15 @@ class ImagesFragment : Fragment() {
      */
     private lateinit var binding: FragmentImagesBinding
 
-    private val adapter = ImagesAdapter{
+    /**
+     * View Model para los datos.
+     */
+    private val viewModel by viewModels<ImagesViewModel>()
+
+    /**
+     * Adaptador para las imágenes.
+     */
+    private val adapter = ImagesAdapter {
 
     }
 
@@ -31,8 +39,41 @@ class ImagesFragment : Fragment() {
         return binding.root
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) = ImagesFragment()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupView()
+        listenData()
     }
+
+    /**
+     * Método que configura la vista.
+     */
+    private fun setupView() {
+        adapter.onLoadMore {
+            viewModel.load()
+        }
+
+        binding.recycler.let {
+            val manager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            it.layoutManager = manager
+            adapter.attach(it, manager, ImagesViewModel.PAGE_SIZE)
+        }
+    }
+
+    /**
+     * Método que se registra a los datos observables del View Model.
+     */
+    private fun listenData() {
+        viewModel.data.observe(viewLifecycleOwner) {
+            adapter.setList(it.toMutableList())
+        }
+
+        viewModel.last.observe(viewLifecycleOwner) {
+            adapter.last(it)
+        }
+
+        viewModel.load()
+    }
+
 }
