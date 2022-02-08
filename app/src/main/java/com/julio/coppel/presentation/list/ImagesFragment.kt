@@ -14,6 +14,9 @@ import com.julio.coppel.databinding.FragmentImagesBinding
 import com.julio.coppel.presentation.list.adapter.ImagesAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * Fragmento para la lista de imágenes.
+ */
 @AndroidEntryPoint
 class ImagesFragment : Fragment() {
 

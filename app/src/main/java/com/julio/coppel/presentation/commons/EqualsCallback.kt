@@ -7,9 +7,6 @@ import androidx.recyclerview.widget.DiffUtil
  * Para utilizar esta clase los objetos deben implementar [ComparableContent].
  *
  * @param T Tipo de elemento entre los que se desea comparar.
- *
- * @author Julio.
- * @since MBP-1653.
  */
 class EqualsCallback<T> : DiffUtil.ItemCallback<T>() {
 

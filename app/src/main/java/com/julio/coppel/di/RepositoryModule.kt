@@ -9,7 +9,7 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 /**
- * Módulo para proveer los repositorios necesarios.
+ * Módulo para proveer los repositorios de datos necesarios.
  */
 @Module
 @InstallIn(SingletonComponent::class)
@@ -19,6 +19,7 @@ object RepositoryModule {
      * Proporciona un acceso al repositorio de imágenes.
      *
      * @param remote Fuente de datos remota de las imágenes.
+     *
      * @return Fuente de datos.
      */
     @Provides

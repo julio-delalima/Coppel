@@ -3,7 +3,6 @@ package com.julio.coppel.framework.source
 import com.julio.coppel.data.source.IImagesRemoteSource
 import com.julio.coppel.framework.data.remote.ApiService
 import com.julio.coppel.framework.data.remote.model.Page
-import com.julio.coppel.framework.data.remote.model.Image
 import retrofit2.Response
 
 /**
@@ -15,5 +14,4 @@ class ImagesRemoteSource(private val api: ApiService) : IImagesRemoteSource {
 
     override suspend fun getImages(items: Int, page: Int): Response<Page> = api.getImages(items, page)
 
-    override suspend fun getImage(id: String): Response<Image> = api.getImage(id)
 }

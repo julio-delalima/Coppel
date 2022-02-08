@@ -1,7 +1,6 @@
 package com.julio.coppel.data.source
 
 import com.julio.coppel.framework.data.remote.model.Page
-import com.julio.coppel.framework.data.remote.model.Image
 import retrofit2.Response
 
 /**
@@ -18,12 +17,4 @@ interface IImagesRemoteSource {
      * @return Página de imágenes.
      */
     suspend fun getImages(items: Int, page: Int): Response<Page>
-
-    /**
-     * Declara el comportamiento para acceder al detalle de una imagen.
-     *
-     * @param id Identificador de la imagen.
-     * @return Imagen.
-     */
-    suspend fun getImage(id: String): Response<Image>
 }

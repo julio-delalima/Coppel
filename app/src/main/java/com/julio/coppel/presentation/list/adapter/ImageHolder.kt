@@ -1,9 +1,5 @@
 package com.julio.coppel.presentation.list.adapter
 
-import android.widget.ImageView
-import androidx.core.view.ViewCompat
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.julio.coppel.R
 import com.julio.coppel.databinding.ItemImageBinding
 import com.julio.coppel.framework.data.remote.model.Image

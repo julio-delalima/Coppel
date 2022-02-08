@@ -21,21 +21,41 @@ import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
+/**
+ * Módulo que provee las instancias únicas para el acceso a Retrofit.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
+    /**
+     * Timeouts.
+     */
     private const val READ_TIMEOUT = 30
     private const val WRITE_TIMEOUT = 30
     private const val CONNECTION_TIMEOUT = 10
     private const val CACHE_SIZE_BYTES = 10 * 1024 * 1024L
 
+    /**
+     * Provee acceso a la instancia de la aplicación.
+     *
+     * @param app Contexto.
+     *
+     * @return Aplicación.
+     */
     @Singleton
     @Provides
     fun provideApplication(@ApplicationContext app: Context): App {
         return app as App
     }
 
+    /**
+     * Provee la instancia de retrofit.
+     *
+     * @param client Cliente.
+     *
+     * @return Instancia única de retrofit.
+     */
     @Provides
     @Singleton
     fun retrofitProvider(client: OkHttpClient): Retrofit {
@@ -45,6 +65,14 @@ object NetworkModule {
             .build()
     }
 
+    /**
+     * Provee una instancia del cliente Http.
+     *
+     * @param headerInterceptor Interceptor para los headers.
+     * @param cache Cache.
+     *
+     * @return Instancia del cliente.
+     */
     @Provides
     @Singleton
     fun okHttpClientProvider(
@@ -68,7 +96,11 @@ object NetworkModule {
         return okHttpClientBuilder.build()
     }
 
-
+    /**
+     * Provee una instancia del interceptor para los header.
+     *
+     * @return Instancia única.
+     */
     @Provides
     @Singleton
     fun provideHeaderInterceptor(): Interceptor {
@@ -79,7 +111,13 @@ object NetworkModule {
         }
     }
 
-
+    /**
+     * Método que provee una instancia para el cache.
+     *
+     * @param context Contexto.
+     *
+     * @return Cache.
+     */
     @Provides
     @Singleton
     internal fun cacheProvider(context: Context): Cache {
@@ -88,12 +126,26 @@ object NetworkModule {
     }
 
 
+    /**
+     * Provider para el contexto de la aplicación.
+     *
+     * @param application Aplicación.
+     *
+     * @return Contexto de la aplicación enviada.
+     */
     @Provides
     @Singleton
     fun contextProvider(application: App): Context {
         return application.applicationContext
     }
 
+    /**
+     * Provider para el API.
+     *
+     * @param retrofit Instancia de retrofit.
+     *
+     * @return Instancia única del service.
+     */
     @Provides
     @Singleton
     fun apiProvider(retrofit: Retrofit): ApiService {

@@ -2,31 +2,33 @@ package com.julio.coppel.presentation.detail
 
 import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.ColorInt
-import androidx.core.view.ViewCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.transition.Transition
 import androidx.transition.TransitionInflater
-import com.google.android.material.color.MaterialColors
-import com.julio.coppel.R
 import com.julio.coppel.databinding.FragmentImageBinding
 import com.julio.coppel.framework.data.remote.model.Image
 import com.julio.coppel.utils.loadImage
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.TimeUnit
 
+/**
+ * Fragmento para el detalle de una imagen.
+ */
 @AndroidEntryPoint
 class ImageFragment : Fragment() {
 
+    /**
+     * Enlace a la vista.
+     */
     private lateinit var binding: FragmentImageBinding
 
+    /**
+     * Acceso a datos.
+     */
     private val viewModel by viewModels<ImageViewModel>()
-
-    private lateinit var sharedTransition: Transition
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,8 +40,7 @@ class ImageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentImageBinding.inflate(layoutInflater)
-        sharedTransition =
-            TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
+        TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
         postponeEnterTransition(250, TimeUnit.MILLISECONDS)
 
         return binding.root
@@ -49,18 +50,15 @@ class ImageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val image = arguments?.getParcelable<Image>(ARG_IMAGE)
 
-        binding.image.loadImage(image?.src?.portrait.orEmpty())
-        binding.alt.text = image?.alt
-        binding.author.text = image?.photographer
-
-        Color.parseColor(image?.avg_color).let { color ->
-            binding.alt.setTextColor(color)
-            binding.author.setTextColor(color)
-        }
-
         binding.image.transitionName = "image_${image?.id}"
+
+        listenData()
+        viewModel.load(image!!)
     }
 
+    /**
+     * Método que se registra a los cambios en los datos.
+     */
     private fun listenData() {
         viewModel.image.observe(viewLifecycleOwner) {
             binding.image.loadImage(it.src.portrait)

@@ -1,8 +1,6 @@
 package com.julio.coppel.domain.usecase
 
 import com.julio.coppel.data.repository.ImagesRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 /**
  * Caso de uso para obtener una página de imágenes.

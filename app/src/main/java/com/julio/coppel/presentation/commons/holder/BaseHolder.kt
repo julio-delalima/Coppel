@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
  * @constructor Almacena el contexto para ser utilizado en subclases.
  *
  * @param itemView Vista raíz del holder.
- * @author julio.
- * @since MBP-1653.
  */
 abstract class BaseHolder<T>(itemView: View) : RecyclerView.ViewHolder(itemView) {
 

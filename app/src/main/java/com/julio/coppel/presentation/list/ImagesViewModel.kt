@@ -10,21 +10,41 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * View Model para la gestión de estado en la lista de imágenes.
+ *
+ * @property getImages Caso de uso para las imágenes.
+ */
 @HiltViewModel
 class ImagesViewModel @Inject constructor(private val getImages: GetImages) : ViewModel() {
 
+    /**
+     * Instancia observable para las imágenes.
+     */
     private val _data = MutableLiveData<List<Image>>()
     val data: LiveData<List<Image>>
         get() = _data
 
+    /**
+     * Instancia observable para la última página.
+     */
     private val _last = MutableLiveData<Boolean>()
     val last: LiveData<Boolean>
         get() = _last
 
+    /**
+     * Última página consumida.
+     */
     private var currentPage = 0
 
+    /**
+     * Indica si se encuentra cargando.
+     */
     private var loading = false
 
+    /**
+     * Método que carga la siguiente página de datos.
+     */
     fun load() {
         viewModelScope.launch {
             if (_last.value != true && !loading) {
@@ -53,10 +73,11 @@ class ImagesViewModel @Inject constructor(private val getImages: GetImages) : Vi
         }
     }
 
-
     companion object {
+        /**
+         * Tamaño de la página.
+         */
         const val PAGE_SIZE = 10
     }
-
 
 }

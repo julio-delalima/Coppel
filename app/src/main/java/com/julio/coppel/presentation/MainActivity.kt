@@ -8,9 +8,15 @@ import androidx.navigation.fragment.NavHostFragment
 import com.julio.coppel.R
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * Activity principal que contiene la lógica de navegación.
+ */
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    /**
+     * Controlador de la navegación.
+     */
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
