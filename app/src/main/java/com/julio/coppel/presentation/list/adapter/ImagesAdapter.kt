@@ -16,7 +16,7 @@ import com.julio.coppel.presentation.commons.holder.LoadingHolder
  * @property onSelectImage Listener para la selección de una imagen.
  */
 class ImagesAdapter(
-    private val onSelectImage: (Image) -> Unit
+    private val onSelectImage: (ItemImageBinding, Image) -> Unit
 ) : EndlessAdapter<Image, BaseHolder<Image>>(EqualsCallback()) {
 
     companion object {
@@ -37,7 +37,11 @@ class ImagesAdapter(
                 parent,
                 false
             )
-        )
+        ) { binding, holder ->
+            getItem(holder.adapterPosition)?.let {
+                onSelectImage.invoke(binding, it)
+            }
+        }
     }
 
     override fun onCreateLoaderHolder(parent: ViewGroup): BaseHolder<Image> {

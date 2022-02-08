@@ -4,8 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.julio.coppel.databinding.FragmentImagesBinding
 import com.julio.coppel.presentation.list.adapter.ImagesAdapter
@@ -27,8 +32,13 @@ class ImagesFragment : Fragment() {
     /**
      * Adaptador para las imágenes.
      */
-    private val adapter = ImagesAdapter {
+    private val adapter = ImagesAdapter { binding, image ->
+        val directions = ImagesFragmentDirections.actionDetail(image)
+        val extras = FragmentNavigatorExtras(
+            binding.image to "image_${image.id}",
+        )
 
+        findNavController().navigate(directions, extras)
     }
 
     override fun onCreateView(
@@ -58,6 +68,19 @@ class ImagesFragment : Fragment() {
             val manager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             it.layoutManager = manager
             adapter.attach(it, manager, ImagesViewModel.PAGE_SIZE)
+
+            postponeEnterTransition()
+            it.viewTreeObserver.addOnPreDrawListener {
+                startPostponedEnterTransition()
+                true
+            }
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePadding(insets.left, insets.top, insets.right, insets.bottom)
+
+            WindowInsetsCompat.CONSUMED
         }
     }
 

@@ -18,5 +18,9 @@
         android:id="@+id/imageFragment"
         android:name="com.julio.coppel.presentation.detail.ImageFragment"
         android:label="fragment_image"
-        tools:layout="@layout/fragment_image" />
+        tools:layout="@layout/fragment_image" >
+        <argument
+            android:name="image"
+            app:argType="com.julio.coppel.framework.data.remote.model.Image" />
+    </fragment>
 </navigation>

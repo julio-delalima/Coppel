@@ -1,6 +1,8 @@
 package com.julio.coppel.framework.data.remote.model
 
+import android.os.Parcelable
 import com.julio.coppel.presentation.commons.EqualsCallback
+import kotlinx.parcelize.Parcelize
 
 /**
  * Imagen de Pexels.
@@ -15,7 +17,9 @@ import com.julio.coppel.presentation.commons.EqualsCallback
  * @property src Variantes.
  * @property url Url de la imagen.
  * @property width Anchura.
+ * @property alt Descripción.
  */
+@Parcelize
 data class Image(
     val avg_color: String,
     val height: Int,
@@ -26,13 +30,15 @@ data class Image(
     val photographer_url: String,
     val src: Src,
     val url: String,
-    val width: Int
-) : EqualsCallback.ComparableContent {
+    val width: Int,
+    val alt: String
+) : EqualsCallback.ComparableContent, Parcelable {
 
     override fun hasTheSameContent(item: Any?): Boolean {
         return item is Image &&
                 item.avg_color == avg_color &&
                 item.photographer == photographer &&
+                item.alt == alt &&
                 item.src == src
     }
 

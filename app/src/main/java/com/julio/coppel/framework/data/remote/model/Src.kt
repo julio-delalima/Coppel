@@ -1,5 +1,8 @@
 package com.julio.coppel.framework.data.remote.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
 /**
  * Variantes de una imagen.
  *
@@ -12,6 +15,7 @@ package com.julio.coppel.framework.data.remote.model
  * @property small Imagen escalada a H 130px.
  * @property tiny Versión escalada a W 280px X H 20px
  */
+@Parcelize
 data class Src(
     val landscape: String,
     val large: String,
@@ -21,7 +25,7 @@ data class Src(
     val portrait: String,
     val small: String,
     val tiny: String
-){
+) : Parcelable {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
