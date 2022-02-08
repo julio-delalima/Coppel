@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.annotation.ColorInt
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.viewModels
+import androidx.transition.Transition
 import androidx.transition.TransitionInflater
 import com.google.android.material.color.MaterialColors
 import com.julio.coppel.R
@@ -16,6 +17,7 @@ import com.julio.coppel.databinding.FragmentImageBinding
 import com.julio.coppel.framework.data.remote.model.Image
 import com.julio.coppel.utils.loadImage
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
 class ImageFragment : Fragment() {
@@ -24,6 +26,7 @@ class ImageFragment : Fragment() {
 
     private val viewModel by viewModels<ImageViewModel>()
 
+    private lateinit var sharedTransition: Transition
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,19 +38,27 @@ class ImageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentImageBinding.inflate(layoutInflater)
+        sharedTransition =
+            TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
+        postponeEnterTransition(250, TimeUnit.MILLISECONDS)
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val image = arguments?.getParcelable<Image>(ARG_IMAGE)
-        ViewCompat.setTransitionName(binding.image, "image_${image?.id}")
-        ViewCompat.setTransitionName(binding.alt, "alt_${image?.id}")
 
+        binding.image.loadImage(image?.src?.portrait.orEmpty())
+        binding.alt.text = image?.alt
+        binding.author.text = image?.photographer
 
-        listenData()
-        viewModel.load(image!!)
+        Color.parseColor(image?.avg_color).let { color ->
+            binding.alt.setTextColor(color)
+            binding.author.setTextColor(color)
+        }
 
+        binding.image.transitionName = "image_${image?.id}"
     }
 
     private fun listenData() {

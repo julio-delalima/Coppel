@@ -16,19 +16,23 @@ import com.julio.coppel.utils.loadImage
  * @property binding Vista.
  * @property listener Listener de selección.
  */
-class ImageHolder(private val binding: ItemImageBinding, private val listener: (ItemImageBinding, ImageHolder) -> Unit) : BaseHolder<Image>(binding.root) {
+class ImageHolder(
+    private val binding: ItemImageBinding,
+    private val listener: (ItemImageBinding, ImageHolder) -> Unit
+) : BaseHolder<Image>(binding.root) {
 
     init {
         binding.clickable.setOnClickListener {
             listener.invoke(binding, this)
         }
     }
+
     override fun bind(item: Image?) {
         item?.let {
-            ViewCompat.setTransitionName(binding.image, "image_${it.id}")
-
             binding.image.loadImage(it.src.medium)
-            binding.author.text = context.getString(R.string.format_author,it.photographer)
+            binding.image.transitionName = "image_${it.id}"
+
+            binding.author.text = context.getString(R.string.format_author, it.photographer)
         }
     }
 }
